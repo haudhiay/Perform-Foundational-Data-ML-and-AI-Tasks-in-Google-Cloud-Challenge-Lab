@@ -1,0 +1,42 @@
+---->> Dataflow script
+gs://cloud-training/gsp323/lab.js
+
+gs://cloud-training/gsp323/lab.schema
+
+transform
+
+qwiklabs-gcp-01-8977be03718f:lab.customers
+
+gs://cloud-training/gsp323/lab.csv
+
+gs://qwiklabs-gcp-01-8977be03718f/bigquery_temp
+
+gs://qwiklabs-gcp-01-8977be03718f/temp
+
+----->> Dataflow in shell
+gcloud dataflow jobs run jobaja --gcs-location gs://dataflow-templates-us-central1/latest/GCS_Text_to_BigQuery --region us-central1 --num-workers 2 --staging-location gs://qwiklabs-gcp-01-8977be03718f/temp --parameters javascriptTextTransformGcsPath=gs://cloud-training/gsp323/lab.js,JSONPath=gs://cloud-training/gsp323/lab.schema,javascriptTextTransformFunctionName=transform,outputTable=qwiklabs-gcp-01-8977be03718f:lab.customers,inputFilePattern=gs://cloud-training/gsp323/lab.csv,bigQueryLoadingTemporaryDirectory=gs://qwiklabs-gcp-01-8977be03718f/bigquery_temp
+
+
+API KEY: AIzaSyC5C2tjet_UYtSzJF8Lz2bCcWrGGG-HQvk
+
+export API_KEY=AIzaSyC5C2tjet_UYtSzJF8Lz2bCcWrGGG-HQvk
+
+
+{
+  "config": {
+      "encoding":"FLAC",
+      "languageCode": "en-US"
+  },
+  "audio": {
+      "uri":"gs://cloud-training/gsp323/task4.flac"
+  }
+}
+
+
+curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}"
+
+curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
+"https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
+
+gsutil cp result.json gs://qwiklabs-gcp-01-8977be03718f-marking/task4-gcs.result
+
